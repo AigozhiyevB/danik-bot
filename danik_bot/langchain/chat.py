@@ -1,8 +1,12 @@
+import pydotenv
+
 from optimum.intel import OVModelForCausalLM
 from transformers import AutoTokenizer, PreTrainedTokenizerFast
 
+env = pydotenv.Environment()
+
 class ChatBot:
-    def __init__(self, model_name: str = "MTSAIR/Cotype-Nano-CPU", device: str = "cpu"):
+    def __init__(self, model_name: str = None, device: str = "cpu"):
         """
         Initialize the chatbot with the Hugging Face model and tokenizer.
 
@@ -10,6 +14,7 @@ class ChatBot:
             model_name (str): Hugging Face model name or path.
             device (str): Device to use for inference ('cpu' or 'cuda').
         """
+        model_name = env.get('CHAT_MODEL') if model_name is None else model_name
         self.device = device
         self.tokenizer: PreTrainedTokenizerFast = AutoTokenizer.from_pretrained(model_name)
         self.model: OVModelForCausalLM = OVModelForCausalLM.from_pretrained(model_name).to(self.device)
