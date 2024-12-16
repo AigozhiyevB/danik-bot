@@ -1,4 +1,5 @@
 # Makefile for setting up and running the Danik Bot project
+VENV_PATH = venv/bin
 
 # Create a virtual environment
 venv:
@@ -6,15 +7,19 @@ venv:
 
 # Activate the virtual environment and install dependencies
 install: venv
-	venv/bin/pip install -r requirements.txt
+	$(VENV_PATH)/pip install -r requirements.txt
+
+# Prepare data
+dataset:
+	$(VENV_PATH)/python danik_bot/scripts/extract_raw.py
 
 # Run the FastAPI application
 run:
-	venv/bin/uvicorn danik_bot.api.routes:app --host 0.0.0.0 --port 8000 --reload
+	$(VENV_PATH)/uvicorn danik_bot.api.routes:app --host 0.0.0.0 --port 8000 --reload
 
 # Run tests
 test:
-	venv/bin/python -m unittest discover danik_bot/tests
+	$(VENV_PATH)/python -m unittest discover danik_bot/tests
 
 # Clean up virtual environment and cached files
 clean:

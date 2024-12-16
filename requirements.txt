@@ -1,8 +1,8 @@
-fastapi==0.100.0
+fastapi~=0.100.0
 uvicorn==0.23.2
 langchain==0.3.7
-faiss-cpu==1.7.4
-beautifulsoup4==4.12.2
+faiss-cpu~=1.7.4
+beautifulsoup4~=4.12.2
 playwright==1.37.0
 requests~=2.32.3
 pandas
@@ -10,7 +10,11 @@ transformers~=4.46.3
 torch
 optimum[openvino]~=1.23.3
 auto-gptq
-parser-2gis
-lxml
-pydantic~=1.10.19
-tqdm
+lxml~=5.3.0
+pydantic~=2.10.3
+tqdm~=4.67.1
+numpy~=1.26.4
+sentence-transformers~=3.3.1
+pydotenv~=0.0.7
+langchain-community~=0.3.12
+langchain-core~=0.3.25
