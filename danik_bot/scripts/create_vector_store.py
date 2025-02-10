@@ -49,7 +49,10 @@ for i in tqdm(jsons):
     text = f'{i["text"]}. Средний чек: {i["mean_bill"]}. Кухни: {i["kitchens"]}'
     doc = Document(
         page_content=text,
-        metadata = {'link': i['link'], 'name': i['name']}
+        metadata = {
+            'link': i['link'],
+            'name': i['name'],
+            'date': i['publication_date']}
     )
     documents.append(doc)
 

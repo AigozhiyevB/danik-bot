@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from danik_bot.langchain.chat import ChatBot
+from danik_bot.langchain_rag.rag import DanikBotPipeline
 
-router = APIRouter()
+app = APIRouter()
 
 # Initialize the chatbot
-chatbot = ChatBot()
+chatbot = DanikBotPipeline()
 
-@router.post("/chat")
+@app.post("/chat")
 async def chat(user_input: str):
     """
     Chat endpoint for the chatbot.
@@ -19,5 +19,5 @@ async def chat(user_input: str):
     """
     if not user_input:
         raise HTTPException(status_code=400, detail="Input cannot be empty.")
-    response = chatbot.generate_response(user_input)
+    response = chatbot.process_query(user_input)
     return {"user_input": user_input, "response": response}
