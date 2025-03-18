@@ -1,3 +1,4 @@
+import os
 import pydotenv
 
 from optimum.intel import OVModelForCausalLM
@@ -17,7 +18,18 @@ class ChatBot:
         model_name = env.get('CHAT_MODEL') if model_name is None else model_name
         self.device = device
         self.tokenizer: PreTrainedTokenizerFast = AutoTokenizer.from_pretrained(model_name)
-        self.model: OVModelForCausalLM = OVModelForCausalLM.from_pretrained(model_name).to(self.device)
+        self.model: OVModelForCausalLM = self._get_model(model_name)
+
+
+    def _get_model(self, model_name):
+        model_path = './models/mtsai'
+        tokenizer: PreTrainedTokenizerFast = AutoTokenizer.from_pretrained(model_name)
+        model = OVModelForCausalLM.from_pretrained(model_name).to(self.device)
+        if not os.path.exists(model_name):
+            model.save_pretrained(model_path)
+            tokenizer.save_pretrained(model_path)
+        return model
+
 
     def generate_response(self, prompt: str, max_length: int = 150) -> str:
         """

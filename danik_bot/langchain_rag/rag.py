@@ -1,9 +1,9 @@
 import pydotenv
-from langchain.prompts import PromptTemplate
-from langchain_community.llms import HuggingFacePipeline
+from langchain_huggingface import HuggingFacePipeline
 from transformers import pipeline
-from danik_bot.langchain_rag.retrieval import FAISSRetriever
-from danik_bot.langchain_rag.chat import ChatBot
+from prompts import SAFETY_PROMPT, RESPONSE_PROMPT
+from retrieval import FAISSRetriever
+from chat import ChatBot
 
 # Load environment variables
 env = pydotenv.Environment()
@@ -27,29 +27,12 @@ class DanikBotPipeline:
         self.retriever = FAISSRetriever()
 
         # Safety check prompt
-        self.safety_prompt = PromptTemplate(
-            input_variables=["query"],
-            template=(
-                "Определите, является ли следующий запрос безопасным для ответа. "
-                "Если запрос безопасен, напишите 'ДА'. Если он небезопасен, напишите 'НЕТ'. "
-                "Запрос: {query}. Твой ответ:"
-            ),
-        )
-        self.safety_chain = self.safety_prompt | self.llm
+        self.safety_prompt = SAFETY_PROMPT
+        self.safety_chain = self.safety_prompt | self.llm.bind(skip_prompt=True, max_len=12)
 
         # Retrieval-based generation prompt
-        self.response_prompt = PromptTemplate(
-            input_variables=["context", "query"],
-            template=(
-                "Ты бот казах из Алматы по имени Даник"
-                "Используя следующий контекст, ответь на запрос "
-                "(Обязательно добавь ссылку 'link'). "
-                "Если контекст не содержит информации, "
-                "связанной с запросом, скажите: 'Извините, по вашему запросу у меня нет данных'.\n\n"
-                "Контекст: {context}\n\nЗапрос: {query} \n\n Ответ:"
-            ),
-        )
-        self.response_chain = self.response_prompt | self.llm
+        self.response_prompt = RESPONSE_PROMPT
+        self.response_chain = self.response_prompt | self.llm.bind(skip_prompt=True)
 
     def process_query(self, query: str):
         """
@@ -58,7 +41,7 @@ class DanikBotPipeline:
         # Step 1: Safety check
         safety_result = self.safety_chain.invoke({'query': query})
         print(safety_result)
-        if safety_result.upper() != "НЕТ":
+        if safety_result.upper() != "NO":
             return "Извините, этот запрос небезопасен."
 
         # Step 2: Retrieve top 5 documents
