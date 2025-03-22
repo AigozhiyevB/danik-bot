@@ -1,11 +1,11 @@
 from langchain_core.prompts import PromptTemplate
 
 
-common_promtp = "All answers must be in JSON format. With key \"answer\""
+common_prompt = ""
 SAFETY_PROMPT = PromptTemplate(
     input_variables=["query"],
     template=(
-        common_promtp +
+        common_prompt +
         "Определите, является ли следующий запрос безопасным для ответа. "
         "Если запрос безопасен, напишите 'YES'. Если он небезопасен, напишите 'NO'. "
         "STOP generation after one word"
@@ -16,12 +16,11 @@ SAFETY_PROMPT = PromptTemplate(
 RESPONSE_PROMPT = PromptTemplate(
     input_variables=["context", "query"],
     template=(
-        common_promtp +
+        common_prompt +
         "Ты бот казах из Алматы по имени Даник"
-        "Используя следующий контекст, ответь на запрос "
+        "Используя следующий контекст: \n\n {context} \n\n"
         "(Обязательно добавь ссылку 'link'). "
-        "Если контекст не содержит информации, "
-        "связанной с запросом, скажите: 'Извините, по вашему запросу у меня нет данных'.\n\n"
-        "Контекст: {context}\n\nЗапрос: {query} \n\n Ответ:"
+        "Oтветь на запрос: \"{query}\"\n\n"
+        "Твой ответ:"
     ),
 )
