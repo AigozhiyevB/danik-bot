@@ -3,17 +3,16 @@ FROM public.ecr.aws/lambda/python:3.11
 #FROM python:3.11-alpine
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /var/task
 
-COPY danik_bot /app/danik_bot
-COPY data /app/data
-COPY docker/prod_reqs.txt /app
+COPY danik_bot ./danik_bot
+COPY data ./data
+COPY docker/prod_reqs.txt ./
 
-# RUN apk add build-base
 
 # Install any needed packages specified in prod_reqs.txt
 RUN pip install --upgrade pip && \
     pip install -r prod_reqs.txt
 
 # Command to run the application
-CMD ["danik_bot.main.lambda_handler"]
+CMD ["danik_bot.lambda_handler"]

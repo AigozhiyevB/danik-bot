@@ -26,6 +26,15 @@ clean:
 docker-build:
 	docker build -f docker/Dockerfile -t sandbox/danik .
 
+
+run-lambda:
+	docker run --platform linux/amd64 --rm --env-file .env -p 9000:8080 sandbox/danik
+
+deploy:
+	make docker-build
+	docker tag sandbox/danik:latest 463224263085.dkr.ecr.eu-north-1.amazonaws.com/sandbox/danik:latest
+	docker push 463224263085.dkr.ecr.eu-north-1.amazonaws.com/sandbox/danik:latest
+
 # Run the application using Docker Compose
 docker-run:
 	docker-compose -f docker/docker-compose.yml up --build
