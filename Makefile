@@ -24,7 +24,7 @@ clean:
 
 # Build the Docker image
 docker-build:
-	docker build -t danik-bot .
+	docker build -f docker/Dockerfile -t sandbox/danik .
 
 # Run the application using Docker Compose
 docker-run:

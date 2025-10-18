@@ -1,4 +1,4 @@
-from telegram_bot import TelegramBotApp
+from telegram_bot import TelegramBotApp, lambda_handler
 import os
 import pydotenv
 

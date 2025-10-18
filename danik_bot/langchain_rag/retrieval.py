@@ -1,7 +1,6 @@
 import os
 from langchain_community.vectorstores import FAISS
 from langchain_community.retrievers import TFIDFRetriever
-from langchain_huggingface import HuggingFaceEmbeddings
 import pydotenv
 
 # Load environment variables
@@ -16,6 +15,7 @@ EMBEDDINGS_MODEL_PATH = env.get("EMBEDDINGS_MODEL")  # HuggingFace embeddings mo
 
 class FAISSRetriever:
     def __init__(self):
+        from langchain_huggingface import HuggingFaceEmbeddings
         # Load the embeddings model
         self.embeddings_model = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL_PATH)
 

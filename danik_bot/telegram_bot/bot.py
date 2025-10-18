@@ -1,3 +1,5 @@
+import json
+import os
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -67,3 +69,26 @@ class TelegramBotApp:
         """Start the bot."""
         logger.info("🚀 Bot is running...")
         self.app.run_polling()
+
+
+def lambda_handler(event, context):
+    """AWS Lambda handler."""
+    # Extract the Telegram webhook payload
+    body = json.loads(event['body'])
+    update = Update.de_json(body, application=None)
+
+    # Set up the ApplicationBuilder with the Telegram token
+    app = ApplicationBuilder().token(os.environ.get("TELEGRAM_TOKEN")).build()
+
+    # Register handlers
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, ask_rag))
+
+    # Process the incoming update
+    app.process_update(update)
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'message': 'Success'})
+    }
