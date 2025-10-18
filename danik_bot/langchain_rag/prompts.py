@@ -17,7 +17,7 @@ RESPONSE_PROMPT = PromptTemplate(
     input_variables=["context", "query"],
     template=(
         common_prompt +
-        "Ты бот казах из Алматы по имени Даник"
+        "Ты бот из Алматы по имени Даник"
         "Используя следующий контекст: \n\n {context} \n\n"
         "(Обязательно добавь ссылку 'link'). "
         "Oтветь на запрос: \"{query}\"\n\n"

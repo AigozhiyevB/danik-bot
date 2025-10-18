@@ -4,7 +4,10 @@ import pydotenv
 from optimum.intel import OVModelForCausalLM
 from transformers import AutoTokenizer, PreTrainedTokenizerFast
 
-env = pydotenv.Environment()
+try:
+    env = pydotenv.Environment(check_file_exists=True)
+except OSError:
+    env = os.environ
 
 class ChatBot:
     def __init__(self, model_name: str = None, device: str = "cpu"):

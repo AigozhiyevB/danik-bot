@@ -5,7 +5,10 @@ from langchain_huggingface import HuggingFaceEmbeddings
 import pydotenv
 
 # Load environment variables
-env = pydotenv.Environment()
+try:
+    env = pydotenv.Environment(check_file_exists=True)
+except OSError:
+    env = os.environ
 
 FAISS_INDEX_PATH = env.get("FAISS_DB")  # Path to FAISS index
 EMBEDDINGS_MODEL_PATH = env.get("EMBEDDINGS_MODEL")  # HuggingFace embeddings model

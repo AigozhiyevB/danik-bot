@@ -9,7 +9,10 @@ from langchain_core.messages.ai import AIMessage
 class DanikBotBedrockPipeline:
     def __init__(self):
         # Load environment variables
-        env = pydotenv.Environment()
+        try:
+            env = pydotenv.Environment(check_file_exists=True)
+        except OSError:
+            env = os.environ
         self._login(env)
         self.model_id = "eu.amazon.nova-micro-v1:0"
 
