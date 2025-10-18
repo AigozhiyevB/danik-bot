@@ -55,3 +55,6 @@ class DanikBotPipeline:
         # Step 2: Generate response using retrieved context
         response = self.response_chain.invoke({"context": context, "query": query}).strip()
         return response
+
+c = DanikBotPipeline()
+print(c.process_query('Где поесть удон?'))

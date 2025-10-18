@@ -1,21 +1,9 @@
-import sys
-sys.path.append('danik_bot')
-from fastapi import FastAPI
-from uvicorn import run
-from api.routes import router as api_router
+from telegram_bot import TelegramBotApp
+import pydotenv
 
-app = FastAPI(
-    title="Danik Bot",
-    description="A LangChain-based chatbot using ISSAI Kazakh LLM for entertainment suggestions in Almaty.",
-    version="1.0.0",
-)
+if __name__ == "__main__":
+    env = pydotenv.Environment()
+    TELEGRAM_TOKEN = env.get("TELEGRAM_TOKEN")
 
-# Include the API routes
-app.include_router(api_router)
-
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to Danik Bot! Use the /chat endpoint to talk to the bot."}
-
-if __name__=='__main__':
-    run(app)
+    bot = TelegramBotApp(TELEGRAM_TOKEN)
+    bot.run()

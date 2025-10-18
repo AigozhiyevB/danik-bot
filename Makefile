@@ -13,10 +13,6 @@ install: venv
 dataset:
 	$(VENV_PATH)/python danik_bot/scripts/extract_raw.py
 
-# Run the FastAPI application
-run:
-	$(VENV_PATH)/uvicorn danik_bot.api.routes:app --host 0.0.0.0 --port 8000 --reload
-
 # Run tests
 test:
 	$(VENV_PATH)/python -m unittest discover danik_bot/tests

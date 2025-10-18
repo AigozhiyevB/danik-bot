@@ -1,8 +1,8 @@
 import os
 import pydotenv
 from langchain_aws import ChatBedrock
-from prompts import SAFETY_PROMPT, RESPONSE_PROMPT
-from retrieval import MyTFIDF
+from langchain_rag.prompts import SAFETY_PROMPT, RESPONSE_PROMPT
+from langchain_rag.retrieval import MyTFIDF
 from langchain_core.messages.ai import AIMessage
 
 
