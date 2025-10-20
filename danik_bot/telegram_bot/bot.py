@@ -75,7 +75,8 @@ class TelegramBotApp:
 def lambda_handler(event, context):
     """AWS Lambda handler."""
     # Extract the Telegram webhook payload
-    body = json.loads(event['body'])
+    tmp = event if isinstance(event, dict) else json.loads(event)
+    body = json.loads(tmp['body'])
     update = Update.de_json(body)
 
     # Set up the ApplicationBuilder with the Telegram token
@@ -87,7 +88,7 @@ def lambda_handler(event, context):
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, ask_rag))
 
     # Process the incoming update
-    app.initialize()
+    asyncio.run(app.initialize())
     asyncio.run(app.process_update(update))
 
     return {
